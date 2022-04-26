@@ -93,7 +93,7 @@ TIniFile *ini = new TIniFile(iniFileName);
 //---------------------------------------------------------------------------
 void __fastcall TDictationOnPaymentFrame::setHeader(void)
 {
-  header->Caption="Реестр на оплату реализованной газетно-журнальной продукции за "+periodStr;
+  header->Caption="ГђГҐГҐГ±ГІГ° Г­Г  Г®ГЇГ«Г ГІГі Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г­Г®Г© ГЈГ Г§ГҐГІГ­Г®-Г¦ГіГ°Г­Г Г«ГјГ­Г®Г© ГЇГ°Г®Г¤ГіГЄГ¶ГЁГЁ Г§Г  "+periodStr;
 }
 //---------------------------------------------------------------------------
 void __fastcall TDictationOnPaymentFrame::loadDictDS(void)
@@ -111,7 +111,7 @@ void __fastcall TDictationOnPaymentFrame::loadDictDS(void)
 //*************
 void __fastcall TDictationOnPaymentFrame::onChangePeriod(void)
 {
-  periodStr=monthBox->Text+" "+yearEdit->Text+" года";
+  periodStr=monthBox->Text+" "+yearEdit->Text+" ГЈГ®Г¤Г ";
   d_date=endOfMonth(getDateFromMonthYearString(periodStr));
   loadDictDS();
   setHeader();
@@ -192,7 +192,7 @@ double payment_s=0.0;
    DataSet->FieldByName("PAYMENT_S")->AsFloat=payment_s;
 }
 //---------------------------------------------------------------------------
-//Заполнение реестра на оплату
+//Г‡Г ГЇГ®Г«Г­ГҐГ­ГЁГҐ Г°ГҐГҐГ±ГІГ°Г  Г­Г  Г®ГЇГ«Г ГІГі
 void __fastcall TDictationOnPaymentFrame::fillItemClick(TObject *Sender)
 {
 FBQuery *fbWQ=fbDB->getFBQ_T2();
@@ -200,7 +200,7 @@ AnsiString sql;
 TDateTime date1=beginOfMonth(d_date);
 
   if(dFrame->getWorkDataSet()->RecordCount > 0)
-  { if(MessageDlg("Внимание! При заполнении реестра существующие данные будут удалены. Продолжить?",mtInformation,TMsgDlgButtons() << mbOK << mbCancel,0)==mrCancel)
+  { if(MessageDlg("Г‚Г­ГЁГ¬Г Г­ГЁГҐ! ГЏГ°ГЁ Г§Г ГЇГ®Г«Г­ГҐГ­ГЁГЁ Г°ГҐГҐГ±ГІГ°Г  Г±ГіГ№ГҐГ±ГІГўГіГѕГ№ГЁГҐ Г¤Г Г­Г­Г»ГҐ ГЎГіГ¤ГіГІ ГіГ¤Г Г«ГҐГ­Г». ГЏГ°Г®Г¤Г®Г«Г¦ГЁГІГј?",mtInformation,TMsgDlgButtons() << mbOK << mbCancel,0)==mrCancel)
       return;
   }
   sql="execute procedure LOAD_ROOL_OF_PAYMENTS(";
@@ -209,7 +209,7 @@ TDateTime date1=beginOfMonth(d_date);
   loadDictDS();
 }
 //---------------------------------------------------------------------------
-//Добавление записи
+//Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г§Г ГЇГЁГ±ГЁ
 void __fastcall TDictationOnPaymentFrame::addRecordItomClick(TObject *Sender)
 {
 TAddRecordsToRoolForm *AF;
@@ -219,7 +219,7 @@ TAddRecordsToRoolForm *AF;
     AF=new TAddRecordsToRoolForm(this,iniFileName,fbDB,d_date);
   }
   catch(Exception &exc)
-  { MessageDlg("Ошибка создания формы TAddRecordsToRoolForm\n"+exc.Message,mtError,TMsgDlgButtons() << mbOK,0);
+  { MessageDlg("ГЋГёГЁГЎГЄГ  Г±Г®Г§Г¤Г Г­ГЁГї ГґГ®Г°Г¬Г» TAddRecordsToRoolForm\n"+exc.Message,mtError,TMsgDlgButtons() << mbOK,0);
     goto end;
   }
   if(AF->ShowModal()==mrOk)
@@ -228,13 +228,13 @@ end:
   if(AF!=NULL) delete AF;
 }
 //---------------------------------------------------------------------------
-//Редактирование
+//ГђГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГҐ
 void __fastcall TDictationOnPaymentFrame::editDictItemClick(TObject *Sender)
 {
   if(dFrame->workSource->State!=dsEdit) dFrame->getWorkDataSet()->Edit();
 }
 //---------------------------------------------------------------------------
-//Удаление выбранных записей
+//Г“Г¤Г Г«ГҐГ­ГЁГҐ ГўГ»ГЎГ°Г Г­Г­Г»Гµ Г§Г ГЇГЁГ±ГҐГ©
 void __fastcall TDictationOnPaymentFrame::delDictItemClick(TObject *Sender)
 {
 TDBGridEh *grid=dFrame->workGrid;
@@ -244,9 +244,9 @@ TpFIBDataSet *ds=dFrame->getWorkDataSet();
   if(grid->SelectedRows->Count==0) grid->SelectedRows->CurrentRowSelected=true;
   AnsiString str;
   if(grid->SelectedRows->Count==1)
-    str="Вы уверены, что хотите удалить текущую запись?";
+    str="Г‚Г» ГіГўГҐГ°ГҐГ­Г», Г·ГІГ® ГµГ®ГІГЁГІГҐ ГіГ¤Г Г«ГЁГІГј ГІГҐГЄГіГ№ГіГѕ Г§Г ГЇГЁГ±Гј?";
   else
-    str="Вы уверены, что хотите удалить выбранные записи?";
+    str="Г‚Г» ГіГўГҐГ°ГҐГ­Г», Г·ГІГ® ГµГ®ГІГЁГІГҐ ГіГ¤Г Г«ГЁГІГј ГўГ»ГЎГ°Г Г­Г­Г»ГҐ Г§Г ГЇГЁГ±ГЁ?";
   if(MessageDlg(str,mtConfirmation,TMsgDlgButtons() << mbOK << mbCancel,0)==mrCancel) return;
 
   AnsiString sql;
@@ -264,14 +264,14 @@ TpFIBDataSet *ds=dFrame->getWorkDataSet();
   loadDictDS();
 }
 //---------------------------------------------------------------------------
-//Очистка реестра на оплату
+//ГЋГ·ГЁГ±ГІГЄГ  Г°ГҐГҐГ±ГІГ°Г  Г­Г  Г®ГЇГ«Г ГІГі
 void __fastcall TDictationOnPaymentFrame::clearItemClick(TObject *Sender)
 {
 FBQuery *fbWQ=fbDB->getFBQ_T2();
 AnsiString sql;
 
   if(dFrame->getWorkDataSet()->RecordCount == 0) return;
-  if(MessageDlg("Вы уверены, что хотите удалить существующие данные реестра?",mtConfirmation,TMsgDlgButtons() << mbOK << mbCancel,0)==mrCancel)
+  if(MessageDlg("Г‚Г» ГіГўГҐГ°ГҐГ­Г», Г·ГІГ® ГµГ®ГІГЁГІГҐ ГіГ¤Г Г«ГЁГІГј Г±ГіГ№ГҐГ±ГІГўГіГѕГ№ГЁГҐ Г¤Г Г­Г­Г»ГҐ Г°ГҐГҐГ±ГІГ°Г ?",mtConfirmation,TMsgDlgButtons() << mbOK << mbCancel,0)==mrCancel)
     return;
 
   sql="delete from dictation_on_payment_table where d_date='"+d_date.DateString()+"'";
@@ -289,40 +289,40 @@ void __fastcall TDictationOnPaymentFrame::cancelItemClick(TObject *Sender)
   if(dFrame->workSource->State==dsEdit) dFrame->getWorkDataSet()->Cancel();
 }
 //---------------------------------------------------------------------------
-//Печать реестра на оплату
+//ГЏГҐГ·Г ГІГј Г°ГҐГҐГ±ГІГ°Г  Г­Г  Г®ГЇГ«Г ГІГі
 void __fastcall TDictationOnPaymentFrame::printRoolItemClick(TObject *Sender)
 {
 AnsiString fName=workDir+"Reports\\RoolOnPaymnetsReport.fr3";
 
   if(frxReport->LoadFromFile(fName)==false)
-  { MessageDlg("Не обнаружен файл с шаблоном отчета - "+fName,mtWarning,TMsgDlgButtons() << mbOK,0);
+  { MessageDlg("ГЌГҐ Г®ГЎГ­Г Г°ГіГ¦ГҐГ­ ГґГ Г©Г« Г± ГёГ ГЎГ«Г®Г­Г®Г¬ Г®ГІГ·ГҐГІГ  - "+fName,mtWarning,TMsgDlgButtons() << mbOK,0);
     return;
   }
-  frxXLSExport->FileName="Реестр на оплату.xls";
+  frxXLSExport->FileName="ГђГҐГҐГ±ГІГ° Г­Г  Г®ГЇГ«Г ГІГі.xls";
   frxDS->DataSet=dFrame->getWorkDataSet();
   frxReport->PrepareReport(true);
   frxReport->ShowPreparedReport();
 }
 //---------------------------------------------------------------------------
-//Печать распоряжения на платеж
+//ГЏГҐГ·Г ГІГј Г°Г Г±ГЇГ®Г°ГїГ¦ГҐГ­ГЁГї Г­Г  ГЇГ«Г ГІГҐГ¦
 void __fastcall TDictationOnPaymentFrame::printDictItemClick(TObject *Sender)
 {
 AnsiString fName=workDir+"Reports\\DictationOnPayment.fr3";
 
   if(frxReport->LoadFromFile(fName)==false)
-  { MessageDlg("Не обнаружен файл с шаблоном отчета - "+fName,mtWarning,TMsgDlgButtons() << mbOK,0);
+  { MessageDlg("ГЌГҐ Г®ГЎГ­Г Г°ГіГ¦ГҐГ­ ГґГ Г©Г« Г± ГёГ ГЎГ«Г®Г­Г®Г¬ Г®ГІГ·ГҐГІГ  - "+fName,mtWarning,TMsgDlgButtons() << mbOK,0);
     return;
   }
-  frxXLSExport->FileName="Распоряжение на платеж.xls";
+  frxXLSExport->FileName="ГђГ Г±ГЇГ®Г°ГїГ¦ГҐГ­ГЁГҐ Г­Г  ГЇГ«Г ГІГҐГ¦.xls";
   frxReport->PrepareReport(true);
   frxReport->ShowPreparedReport();
 }
 //---------------------------------------------------------------------------
 void __fastcall TDictationOnPaymentFrame::frxReportGetValue(const AnsiString VarName, Variant &Value)
 {
-  //Реестр на оплату
+  //ГђГҐГҐГ±ГІГ° Г­Г  Г®ГЇГ«Г ГІГі
   if(VarName=="Title")
-  { AnsiString s="Реестр на оплату реализованной газетно-журнальной продукции за ";
+  { AnsiString s="ГђГҐГҐГ±ГІГ° Г­Г  Г®ГЇГ«Г ГІГі Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г­Г®Г© ГЈГ Г§ГҐГІГ­Г®-Г¦ГіГ°Г­Г Г«ГјГ­Г®Г© ГЇГ°Г®Г¤ГіГЄГ¶ГЁГЁ Г§Г  ";
     s+=periodStr;
     Value=s;
   }
@@ -342,26 +342,26 @@ void __fastcall TDictationOnPaymentFrame::frxReportGetValue(const AnsiString Var
   {
     Value=getConstValue(this,fbDB,"WORKMAN_PHONE",d_date);
   }
-  //Распоряжение на платеж
-  else if(VarName=="Payee") //получатель платежа
+  //ГђГ Г±ГЇГ®Г°ГїГ¦ГҐГ­ГЁГҐ Г­Г  ГЇГ«Г ГІГҐГ¦
+  else if(VarName=="Payee") //ГЇГ®Г«ГіГ·Г ГІГҐГ«Гј ГЇГ«Г ГІГҐГ¦Г 
   {
-    Value="Согласно реестра на оплату реализованной ГЖП за "+periodStr;
+    Value="Г‘Г®ГЈГ«Г Г±Г­Г® Г°ГҐГҐГ±ГІГ°Г  Г­Г  Г®ГЇГ«Г ГІГі Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г­Г®Г© ГѓГ†ГЏ Г§Г  "+periodStr;
   }
-  else if(VarName=="PurposeOfPayment") //назначение платежа
+  else if(VarName=="PurposeOfPayment") //Г­Г Г§Г­Г Г·ГҐГ­ГЁГҐ ГЇГ«Г ГІГҐГ¦Г 
   {
-    Value="Оплата реализованной газетно-журнальной продукции за "+periodStr;
+    Value="ГЋГЇГ«Г ГІГ  Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г­Г®Г© ГЈГ Г§ГҐГІГ­Г®-Г¦ГіГ°Г­Г Г«ГјГ­Г®Г© ГЇГ°Г®Г¤ГіГЄГ¶ГЁГЁ Г§Г  "+periodStr;
   }
-  else if(VarName=="BaseOfPayment") //основание платежа
+  else if(VarName=="BaseOfPayment") //Г®Г±Г­Г®ГўГ Г­ГЁГҐ ГЇГ«Г ГІГҐГ¦Г 
   {
-    Value="Счета согласно реестра на оплату реализованной ГЖП за "+periodStr;
+    Value="Г‘Г·ГҐГІГ  Г±Г®ГЈГ«Г Г±Г­Г® Г°ГҐГҐГ±ГІГ°Г  Г­Г  Г®ГЇГ«Г ГІГі Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г­Г®Г© ГѓГ†ГЏ Г§Г  "+periodStr;
   }
-  else if(VarName=="Summa") //сумма платежа
+  else if(VarName=="Summa") //Г±ГіГ¬Г¬Г  ГЇГ«Г ГІГҐГ¦Г 
   { AnsiString summa="";
     int cn=dFrame->findPozitionColumnInGrid("PAYMENT_S");
     if(cn>0) summa=dFrame->workGrid->SumList->SumCollection->Items[3]->SumValue;
     Value=summa;
   }
-  else if(VarName=="SummaPropis") //сумма прописью
+  else if(VarName=="SummaPropis") //Г±ГіГ¬Г¬Г  ГЇГ°Г®ГЇГЁГ±ГјГѕ
   { double summa=0;
     int cn=dFrame->findPozitionColumnInGrid("PAYMENT_S");
     if(cn>0) summa=dFrame->workGrid->SumList->SumCollection->Items[3]->SumValue;
@@ -415,7 +415,7 @@ void __fastcall TDictationOnPaymentFrame::frxReportGetValue(const AnsiString Var
     s=dt.DateString()+", "+getConstValue(this,fbDB,"BOOKMAN_JOB_TITLE",dt);
     s+="                                           ";
     s+=getConstValue(this,fbDB,"BOOKMAN_FIO",dt);
-    Value=s;
+    Value=s
   }
 }
 //---------------------------------------------------------------------------
